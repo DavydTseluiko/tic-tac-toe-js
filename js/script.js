@@ -126,6 +126,9 @@ const gameControl = (function () {
       }
       roundPlayed++;
     }
+    if (roundPlayed === 10) {
+      console.log("It's a tie");
+    }
   }
 
   console.log(firstPlayer, secondPlayer);
