@@ -50,24 +50,62 @@ const gameControl = (function () {
     return gridBoard.join("");
   }
   function checkHorizontal(player) {
-    let ifWonHorizontally = 0;
+    let ifWon = 0;
     const boardSpots = [0, 3, 6];
 
     for (spot of boardSpots) {
       for (let i = spot; i < spot + 3; i++) {
         if (gameBoard.board[i] === player.mark) {
-          ifWonHorizontally++;
+          ifWon++;
         }
       }
-      if (ifWonHorizontally === 3) {
+      if (ifWon === 3) {
         console.log(`${player.name} won the game`);
-        return "won";
+        return true;
       }
-      ifWonHorizontally = 0;
+      ifWon = 0;
+    }
+  }
+  function checkVertical(player) {
+    let ifWon = 0;
+    const boardSpots = [0, 1, 2];
+
+    for (spot of boardSpots) {
+      for (let i = spot; i <= spot + 6; i += 3) {
+        if (gameBoard.board[i] === player.mark) {
+          ifWon++;
+        }
+      }
+      if (ifWon === 3) {
+        console.log(`${player.name} won the game`);
+        return true;
+      }
+      ifWon = 0;
+    }
+  }
+  function checkDiagonal(player) {
+    let ifWonLeftDiagonal = 0;
+    let ifWonRightDiagonal = 0;
+
+    for (let i = 0; i < 9; i += 4) {
+      if (gameBoard.board[i] == player.mark) {
+        ifWonLeftDiagonal++;
+      }
+    }
+    for (let i = 2; i < 7; i += 2) {
+      if (gameBoard.board[i] == player.mark) {
+        ifWonRightDiagonal++;
+      }
+    }
+    if (ifWonLeftDiagonal === 3 || ifWonRightDiagonal === 3) {
+      console.log(`${player.name} won the game`);
+      return true;
     }
   }
   function defineRules(player) {
-    return checkHorizontal(player) === "won";
+    return (
+      checkHorizontal(player) || checkVertical(player) || checkDiagonal(player)
+    );
   }
   function playGame() {
     const orderToPlay = defineOrderToPlay();
@@ -75,23 +113,24 @@ const gameControl = (function () {
     while (roundPlayed <= 9) {
       if (roundPlayed % 2 !== 0) {
         playRound(orderToPlay[0]);
+        console.log(displayBoard());
         if (defineRules(orderToPlay[0])) {
           break;
         }
       } else {
         playRound(orderToPlay[1]);
+        console.log(displayBoard());
         if (defineRules(orderToPlay[1])) {
           break;
         }
       }
       roundPlayed++;
-      console.log(displayBoard());
     }
   }
 
   console.log(firstPlayer, secondPlayer);
 
-  return { playGame, defineRules };
+  return { playGame };
 })();
 
 gameControl.playGame();
