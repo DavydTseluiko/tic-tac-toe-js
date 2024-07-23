@@ -9,9 +9,14 @@ const player = function (name, marker) {
 };
 
 const gameControl = (function () {
-  const firstPlayer = player(prompt("First Player's name"), "X");
-  const secondPlayer = player(prompt("Second Player's name"), "O");
+  const randomMarks = defineRandomMarks();
+  const firstPlayer = player("David", randomMarks[0]);
+  const secondPlayer = player("John", randomMarks[1]);
 
-  console.log(firstPlayer);
-  console.log(secondPlayer);
+  function defineRandomMarks() {
+    const randomNumber = Math.floor(Math.random() * 2);
+    return randomNumber === 0 ? ["X", "O"] : ["O", "X"];
+  }
+
+  console.log(firstPlayer, secondPlayer);
 })();
