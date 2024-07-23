@@ -49,14 +49,40 @@ const gameControl = (function () {
     });
     return gridBoard.join("");
   }
+  function checkHorizontal(player) {
+    let ifWonHorizontally = 0;
+    const boardSpots = [0, 3, 6];
+
+    for (spot of boardSpots) {
+      for (let i = spot; i < spot + 3; i++) {
+        if (gameBoard.board[i] === player.mark) {
+          ifWonHorizontally++;
+        }
+      }
+      if (ifWonHorizontally === 3) {
+        console.log(`${player.name} won the game`);
+        return "won";
+      }
+      ifWonHorizontally = 0;
+    }
+  }
+  function defineRules(player) {
+    return checkHorizontal(player) === "won";
+  }
   function playGame() {
     const orderToPlay = defineOrderToPlay();
 
     while (roundPlayed <= 9) {
       if (roundPlayed % 2 !== 0) {
         playRound(orderToPlay[0]);
+        if (defineRules(orderToPlay[0])) {
+          break;
+        }
       } else {
         playRound(orderToPlay[1]);
+        if (defineRules(orderToPlay[1])) {
+          break;
+        }
       }
       roundPlayed++;
       console.log(displayBoard());
@@ -65,7 +91,7 @@ const gameControl = (function () {
 
   console.log(firstPlayer, secondPlayer);
 
-  return { playGame };
+  return { playGame, defineRules };
 })();
 
 gameControl.playGame();
