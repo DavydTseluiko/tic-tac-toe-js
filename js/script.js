@@ -1,5 +1,5 @@
 const gameBoard = (function () {
-  board = new Array(9);
+  board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
 
   return { board };
 })();
@@ -35,9 +35,19 @@ const gameControl = (function () {
     let choice;
     do {
       choice = defineChoice(player);
-    } while (gameBoard.board[choice - 1] !== undefined);
+    } while (gameBoard.board[choice - 1] !== "-");
 
     return (gameBoard.board[choice - 1] = player.mark);
+  }
+  function displayBoard() {
+    let gridBoard = [];
+    gameBoard.board.forEach((value, index) => {
+      if (index % 3 === 0 && index !== 0) {
+        gridBoard.push("\n");
+      }
+      gridBoard.push(value);
+    });
+    return gridBoard.join("");
   }
   function playGame() {
     const orderToPlay = defineOrderToPlay();
@@ -49,7 +59,7 @@ const gameControl = (function () {
         playRound(orderToPlay[1]);
       }
       roundPlayed++;
-      console.log(gameBoard.board);
+      console.log(displayBoard());
     }
   }
 
