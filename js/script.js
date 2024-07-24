@@ -54,7 +54,7 @@ const gameControl = (function () {
 
     for (spot of boardSpots) {
       for (let i = spot; i < spot + 3; i++) {
-        if (gameBoard.board[i] === player.mark) {
+        if (gameBoard.board[i].textContent === player.mark) {
           ifWon++;
         }
       }
@@ -71,7 +71,7 @@ const gameControl = (function () {
 
     for (spot of boardSpots) {
       for (let i = spot; i <= spot + 6; i += 3) {
-        if (gameBoard.board[i] === player.mark) {
+        if (gameBoard.board[i].textContent === player.mark) {
           ifWon++;
         }
       }
@@ -87,12 +87,12 @@ const gameControl = (function () {
     let ifWonRightDiagonal = 0;
 
     for (let i = 0; i < 9; i += 4) {
-      if (gameBoard.board[i] == player.mark) {
+      if (gameBoard.board[i].textContent == player.mark) {
         ifWonLeftDiagonal++;
       }
     }
     for (let i = 2; i < 7; i += 2) {
-      if (gameBoard.board[i] == player.mark) {
+      if (gameBoard.board[i].textContent == player.mark) {
         ifWonRightDiagonal++;
       }
     }
@@ -102,9 +102,14 @@ const gameControl = (function () {
     }
   }
   function defineRules(player) {
-    return (
-      checkHorizontal(player) || checkVertical(player) || checkDiagonal(player)
-    );
+    if (
+      checkHorizontal(player) ||
+      checkVertical(player) ||
+      checkDiagonal(player)
+    ) {
+      gameBoard.reset();
+      roundPlayed = 1;
+    }
   }
   function playGame(event) {
     // const orderToPlay = defineOrderToPlay();
@@ -130,13 +135,15 @@ const gameControl = (function () {
     const orderToPlay = defineOrderToPlay();
     if (roundPlayed % 2 !== 0) {
       playRound(event, orderToPlay[0]);
+      defineRules(orderToPlay[0]);
     } else {
       playRound(event, orderToPlay[1]);
+      defineRules(orderToPlay[1]);
     }
     if (roundPlayed === 10) {
       console.log("It's a tie");
       gameBoard.reset();
-      roundPlayed = 0;
+      roundPlayed = 1;
     }
   }
 
