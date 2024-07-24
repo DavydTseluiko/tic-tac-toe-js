@@ -2,9 +2,8 @@ const gameBoard = (function () {
   const board = document.querySelectorAll(".block");
 
   board.forEach((block) =>
-    block.addEventListener("click", (event) => console.log(event.target))
+    block.addEventListener("click", (event) => gameControl.playGame(event))
   );
-  // console.log(board);
 
   return { board };
 })();
@@ -112,28 +111,30 @@ const gameControl = (function () {
       checkHorizontal(player) || checkVertical(player) || checkDiagonal(player)
     );
   }
-  function playGame() {
-    const orderToPlay = defineOrderToPlay();
-
-    while (roundPlayed <= 9) {
-      if (roundPlayed % 2 !== 0) {
-        playRound(orderToPlay[0]);
-        console.log(displayBoard());
-        if (defineRules(orderToPlay[0])) {
-          break;
-        }
-      } else {
-        playRound(orderToPlay[1]);
-        console.log(displayBoard());
-        if (defineRules(orderToPlay[1])) {
-          break;
-        }
-      }
-      roundPlayed++;
-    }
-    if (roundPlayed === 10) {
-      console.log("It's a tie");
-    }
+  function playGame(event) {
+    // const orderToPlay = defineOrderToPlay();
+    // while (roundPlayed <= 9) {
+    //   if (roundPlayed % 2 !== 0) {
+    //     playRound(orderToPlay[0]);
+    //     console.log(displayBoard());
+    //     if (defineRules(orderToPlay[0])) {
+    //       break;
+    //     }
+    //   } else {
+    //     playRound(orderToPlay[1]);
+    //     console.log(displayBoard());
+    //     if (defineRules(orderToPlay[1])) {
+    //       break;
+    //     }
+    //   }
+    //   roundPlayed++;
+    // }
+    // if (roundPlayed === 10) {
+    //   console.log("It's a tie");
+    // }
+    roundPlayed++;
+    event.target.textContent = event.target.dataset.index;
+    console.log(roundPlayed);
   }
 
   return { playGame };

@@ -30,6 +30,12 @@ h1 {
   border-bottom: 2px solid var(--white);
   border-right: 2px solid var(--white);
   height: 150px;
+
+  font-size: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .block:nth-of-type(3n) {
