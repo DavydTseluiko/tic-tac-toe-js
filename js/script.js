@@ -5,7 +5,11 @@ const gameBoard = (function () {
     block.addEventListener("click", (event) => gameControl.playGame(event))
   );
 
-  return { board };
+  function reset() {
+    board.forEach((block) => (block.textContent = ""));
+  }
+
+  return { board, reset };
 })();
 
 const player = function (name, mark) {
@@ -28,20 +32,11 @@ const gameControl = (function () {
       ? [firstPlayer, secondPlayer]
       : [secondPlayer, firstPlayer];
   }
-  function defineChoice(player) {
-    let choice;
-    do {
-      choice = +prompt(`${player.name} enter number between 1 and 9`);
-    } while (choice < 1 || choice > 9);
-    return choice;
-  }
-  function playRound(player) {
-    let choice;
-    do {
-      choice = defineChoice(player);
-    } while (gameBoard.board[choice - 1] !== "-");
-
-    return (gameBoard.board[choice - 1] = player.mark);
+  function playRound(event, player) {
+    if (event.target.textContent === "") {
+      roundPlayed++;
+      return (event.target.textContent = player.mark);
+    }
   }
   function displayBoard() {
     let gridBoard = [];
@@ -132,9 +127,17 @@ const gameControl = (function () {
     // if (roundPlayed === 10) {
     //   console.log("It's a tie");
     // }
-    roundPlayed++;
-    event.target.textContent = event.target.dataset.index;
-    console.log(roundPlayed);
+    const orderToPlay = defineOrderToPlay();
+    if (roundPlayed % 2 !== 0) {
+      playRound(event, orderToPlay[0]);
+    } else {
+      playRound(event, orderToPlay[1]);
+    }
+    if (roundPlayed === 10) {
+      console.log("It's a tie");
+      gameBoard.reset();
+      roundPlayed = 0;
+    }
   }
 
   return { playGame };
