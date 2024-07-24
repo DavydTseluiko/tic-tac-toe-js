@@ -71,3 +71,29 @@ h1 {
   opacity: 1;
   visibility: visible;
 }
+
+.buttons {
+  position: absolute;
+  top: 25vh;
+  left: 15vw;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons > * {
+  background-color: var(--white);
+  color: var(--black);
+  border: none;
+  font-size: 20px;
+  padding: 7px 50px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s ease-out;
+}
+
+.buttons > *:hover {
+  background-color: #bebebe;
+  box-shadow: 0 0 20px var(--white);
+}

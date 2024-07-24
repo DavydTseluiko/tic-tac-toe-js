@@ -1,9 +1,11 @@
 const gameBoard = (function () {
   const board = document.querySelectorAll(".block");
+  const resetGame = document.querySelector(".reset");
 
   board.forEach((block) =>
     block.addEventListener("click", (event) => gameControl.playGame(event))
   );
+  resetGame.addEventListener("click", (event) => gameControl.playGame(event));
 
   function reset() {
     board.forEach((block) => (block.textContent = ""));
@@ -110,6 +112,11 @@ const gameControl = (function () {
     }
   }
   function playGame(event) {
+    if (event.target.className === "reset") {
+      gameBoard.reset();
+      roundPlayed = 1;
+    }
+
     const orderToPlay = defineOrderToPlay();
     if (roundPlayed % 2 !== 0) {
       playRound(event, orderToPlay[0]);
@@ -127,5 +134,3 @@ const gameControl = (function () {
 
   return { playGame };
 })();
-
-// gameControl.playGame();
