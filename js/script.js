@@ -1,5 +1,10 @@
 const gameBoard = (function () {
-  board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+  const board = document.querySelectorAll(".block");
+
+  board.forEach((block) =>
+    block.addEventListener("click", (event) => console.log(event.target))
+  );
+  // console.log(board);
 
   return { board };
 })();
@@ -131,9 +136,7 @@ const gameControl = (function () {
     }
   }
 
-  console.log(firstPlayer, secondPlayer);
-
   return { playGame };
 })();
 
-gameControl.playGame();
+// gameControl.playGame();
