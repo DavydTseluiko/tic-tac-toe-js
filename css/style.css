@@ -45,3 +45,29 @@ h1 {
 .block:nth-of-type(1n + 7) {
   border-bottom: none;
 }
+
+.winner {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  padding: 20px;
+  background-color: var(--black);
+  color: var(--white);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+.winner.show {
+  opacity: 1;
+  visibility: visible;
+}

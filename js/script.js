@@ -38,16 +38,6 @@ const gameControl = (function () {
       return (event.target.textContent = player.mark);
     }
   }
-  function displayBoard() {
-    let gridBoard = [];
-    gameBoard.board.forEach((value, index) => {
-      if (index % 3 === 0 && index !== 0) {
-        gridBoard.push("\n");
-      }
-      gridBoard.push(value);
-    });
-    return gridBoard.join("");
-  }
   function checkHorizontal(player) {
     let ifWon = 0;
     const boardSpots = [0, 3, 6];
@@ -59,7 +49,6 @@ const gameControl = (function () {
         }
       }
       if (ifWon === 3) {
-        console.log(`${player.name} won the game`);
         return true;
       }
       ifWon = 0;
@@ -76,7 +65,6 @@ const gameControl = (function () {
         }
       }
       if (ifWon === 3) {
-        console.log(`${player.name} won the game`);
         return true;
       }
       ifWon = 0;
@@ -97,9 +85,18 @@ const gameControl = (function () {
       }
     }
     if (ifWonLeftDiagonal === 3 || ifWonRightDiagonal === 3) {
-      console.log(`${player.name} won the game`);
       return true;
     }
+  }
+  function defineWinner(player) {
+    const winner = document.querySelector(".winner");
+
+    winner.textContent = `${player.name} won the game`;
+    winner.classList.add("show");
+
+    setTimeout(() => {
+      winner.classList.remove("show");
+    }, 2200);
   }
   function defineRules(player) {
     if (
@@ -107,31 +104,12 @@ const gameControl = (function () {
       checkVertical(player) ||
       checkDiagonal(player)
     ) {
+      defineWinner(player);
       gameBoard.reset();
       roundPlayed = 1;
     }
   }
   function playGame(event) {
-    // const orderToPlay = defineOrderToPlay();
-    // while (roundPlayed <= 9) {
-    //   if (roundPlayed % 2 !== 0) {
-    //     playRound(orderToPlay[0]);
-    //     console.log(displayBoard());
-    //     if (defineRules(orderToPlay[0])) {
-    //       break;
-    //     }
-    //   } else {
-    //     playRound(orderToPlay[1]);
-    //     console.log(displayBoard());
-    //     if (defineRules(orderToPlay[1])) {
-    //       break;
-    //     }
-    //   }
-    //   roundPlayed++;
-    // }
-    // if (roundPlayed === 10) {
-    //   console.log("It's a tie");
-    // }
     const orderToPlay = defineOrderToPlay();
     if (roundPlayed % 2 !== 0) {
       playRound(event, orderToPlay[0]);
