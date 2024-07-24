@@ -1,9 +1,27 @@
 const gameBoard = (function () {
   const board = document.querySelectorAll(".block");
   const resetGame = document.querySelector(".reset");
+  const name = document.querySelector(".name");
+
+  function askPlayerForName() {
+    const userName = document.querySelector(".winner");
+
+    userName.textContent = `Enter your username`;
+    userName.classList.add("show");
+
+    setTimeout(() => {
+      userName.classList.remove("show");
+    }, 2200);
+  }
 
   board.forEach((block) =>
-    block.addEventListener("click", (event) => gameControl.playGame(event))
+    block.addEventListener("click", (event) => {
+      if (name.value !== "") {
+        gameControl.playGame(event);
+      } else {
+        askPlayerForName();
+      }
+    })
   );
   resetGame.addEventListener("click", (event) => gameControl.playGame(event));
 
@@ -11,7 +29,7 @@ const gameBoard = (function () {
     board.forEach((block) => (block.textContent = ""));
   }
 
-  return { board, reset };
+  return { board, reset, name };
 })();
 
 const player = function (name, mark) {
@@ -19,9 +37,13 @@ const player = function (name, mark) {
 };
 
 const gameControl = (function () {
-  const randomMarks = defineRandomMarks();
-  const firstPlayer = player("David", randomMarks[0]);
-  const secondPlayer = player("John", randomMarks[1]);
+  let randomMarks = defineRandomMarks();
+  let firstPlayer;
+  gameBoard.name.addEventListener(
+    "input",
+    () => (firstPlayer = player(gameBoard.name.value, randomMarks[0]))
+  );
+  let secondPlayer = player("Bot", randomMarks[1]);
 
   let roundPlayed = 1;
 
@@ -109,6 +131,11 @@ const gameControl = (function () {
       defineWinner(player);
       gameBoard.reset();
       roundPlayed = 1;
+
+      randomMarks = defineRandomMarks();
+      firstPlayer.mark = randomMarks[0];
+      secondPlayer.mark = randomMarks[1];
+      console.log(randomMarks);
     }
   }
   function playGame(event) {

@@ -65,6 +65,7 @@ h1 {
   opacity: 0;
   visibility: hidden;
   transition: opacity 1s ease-out, visibility 1s ease-out;
+  text-align: center;
 }
 
 .winner.show {
@@ -75,14 +76,14 @@ h1 {
 .buttons {
   position: absolute;
   top: 25vh;
-  left: 15vw;
+  left: 10vw;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
-.buttons > * {
+.buttons > button {
   background-color: var(--white);
   color: var(--black);
   border: none;
@@ -93,7 +94,23 @@ h1 {
   transition: all 0.5s ease-out;
 }
 
-.buttons > *:hover {
+.buttons > button:hover {
   background-color: #bebebe;
-  box-shadow: 0 0 20px var(--white);
+  box-shadow: 0 0 12px var(--white);
+}
+
+.name {
+  background-color: var(--black);
+  border: 1px solid var(--white);
+  box-shadow: 2px 2px 8px var(--white);
+  color: var(--white);
+  font-size: 24px;
+  padding: 10px;
+  width: 200px;
+  transition: box-shadow 0.5s ease-out;
+}
+
+.name:focus {
+  outline: none;
+  box-shadow: 2px 2px 12px var(--white);
 }
