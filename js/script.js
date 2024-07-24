@@ -37,29 +37,31 @@ const player = function (name, mark) {
 };
 
 const gameControl = (function () {
-  let randomMarks = defineRandomMarks();
   let firstPlayer;
   gameBoard.name.addEventListener(
     "input",
-    () => (firstPlayer = player(gameBoard.name.value, randomMarks[0]))
+    () => (firstPlayer = player(gameBoard.name.value, "X"))
   );
-  let secondPlayer = player("Bot", randomMarks[1]);
+  let secondPlayer = player("Bot", "O");
 
   let roundPlayed = 1;
 
-  function defineRandomMarks() {
-    const randomNumber = Math.floor(Math.random() * 2);
-    return randomNumber === 0 ? ["X", "O"] : ["O", "X"];
-  }
   function defineOrderToPlay() {
     return firstPlayer.mark === "X"
       ? [firstPlayer, secondPlayer]
       : [secondPlayer, firstPlayer];
   }
   function playRound(event, player) {
-    if (event.target.textContent === "") {
+    if (event.target.textContent === "" && player.name !== "Bot") {
       roundPlayed++;
       return (event.target.textContent = player.mark);
+    } else {
+      let generateRandomNumber;
+      do {
+        generateRandomNumber = Math.floor(Math.random() * 9);
+      } while (gameBoard.board[generateRandomNumber].textContent !== "");
+
+      return (gameBoard.board[generateRandomNumber].textContent = player.mark);
     }
   }
   function checkHorizontal(player) {
@@ -131,29 +133,36 @@ const gameControl = (function () {
       defineWinner(player);
       gameBoard.reset();
       roundPlayed = 1;
-
-      randomMarks = defineRandomMarks();
-      firstPlayer.mark = randomMarks[0];
-      secondPlayer.mark = randomMarks[1];
-      console.log(randomMarks);
     }
   }
   function playGame(event) {
-    if (event.target.className === "reset") {
+    const orderToPlay = defineOrderToPlay();
+
+    playRound(event, orderToPlay[0]);
+    if (roundPlayed !== 10) {
+      playRound(event, orderToPlay[1]);
+    }
+
+    defineRules(orderToPlay[0]);
+    defineRules(orderToPlay[1]);
+
+    roundPlayed++;
+
+    if (roundPlayed === 10) {
+      const winner = document.querySelector(".winner");
+
+      winner.textContent = "It's a tie";
+      winner.classList.add("show");
+
+      setTimeout(() => {
+        winner.classList.remove("show");
+      }, 2200);
+
       gameBoard.reset();
       roundPlayed = 1;
     }
 
-    const orderToPlay = defineOrderToPlay();
-    if (roundPlayed % 2 !== 0) {
-      playRound(event, orderToPlay[0]);
-      defineRules(orderToPlay[0]);
-    } else {
-      playRound(event, orderToPlay[1]);
-      defineRules(orderToPlay[1]);
-    }
-    if (roundPlayed === 10) {
-      console.log("It's a tie");
+    if (event.target.className === "reset") {
       gameBoard.reset();
       roundPlayed = 1;
     }
